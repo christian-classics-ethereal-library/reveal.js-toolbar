@@ -9,7 +9,6 @@
  *		- Reimplement auto slide button to allow restyling ?
  * 		- Notes ?
  * 		- PDF export ?
- *		- custom buttons
  *		- tooltips
  */
 
@@ -84,6 +83,7 @@ var RevealToolbar =
         var showPause = option(options.pause, false);
         var showNotes = option(options.notes, false);
         var showHelp = option(options.help, false);
+        var custom = option(options.custom, false);
         var captureMenu = option(options.captureMenu, true);
         var capturePlaybackControl = option(
           options.capturePlaybackControl,
@@ -183,6 +183,9 @@ var RevealToolbar =
           });
         }
 
+        if (custom) {
+          custom.forEach(element => createToolbarButton(element.icon, element.callback));
+        }
         if (captureMenu) {
           // handle async loading of plugins
           var id_menu = setInterval(function() {
