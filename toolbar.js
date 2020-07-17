@@ -84,6 +84,7 @@ var RevealToolbar =
         var showNotes = option(options.notes, false);
         var showHelp = option(options.help, false);
         var custom = option(options.custom, false);
+        var exit = option(options.exit, false);
         var captureMenu = option(options.captureMenu, true);
         var capturePlaybackControl = option(
           options.capturePlaybackControl,
@@ -92,7 +93,17 @@ var RevealToolbar =
 
         // Cache references to key DOM elements
         dom.reveal = document.querySelector('.reveal');
+        dom.exit = document.querySelector('.reveal-exit');
         dom.toolbar = document.querySelector('.reveal-toolbar');
+
+        if (exit && !dom.exit) {
+          dom.exit = createNode(dom.reveal, 'div', 'reveal-exit', null);
+          createContainerButton(
+            exit.icon,
+            exit.callback,
+            dom.exit
+          );
+        }
 
         if (!dom.toolbar) {
           dom.toolbar = createNode(dom.reveal, 'div', 'reveal-toolbar', null);
@@ -105,9 +116,9 @@ var RevealToolbar =
           position == 'top' ? 'reveal-toolbar-top' : 'reveal-toolbar-bottom'
         );
 
-        function createToolbarButton(icon, cb) {
+        function createContainerButton(icon, cb, container = dom.toolbar) {
           var button = createNode(
-            dom.toolbar,
+            container,
             'a',
             'reveal-toolbar-button',
             null
@@ -122,30 +133,30 @@ var RevealToolbar =
         }
 
         if (showOverview) {
-          dom.overviewButton = createToolbarButton(
+          dom.overviewButton = createContainerButton(
             'fa-th-large',
             Reveal.toggleOverview
           );
         }
 
         if (showHelp) {
-          dom.helpButton = createToolbarButton(
+          dom.helpButton = createContainerButton(
             'fa-question',
             Reveal.toggleHelp
           );
         }
 
         if (showNotes && !Reveal.isSpeakerNotes()) {
-          createToolbarButton('fa-list-alt', function() {
+          createContainerButton('fa-list-alt', function() {
             if (RevealNotes) {
               RevealNotes.open();
             }
           });
-          // createToolbarButton('fa-list-alt', function() { Reveal.triggerKey(83) });
+          // createContainerButton('fa-list-alt', function() { Reveal.triggerKey(83) });
         }
 
         if (showFullscreen) {
-          dom.fullscreenButton = createToolbarButton('fa-expand', function() {
+          dom.fullscreenButton = createContainerButton('fa-expand', function() {
             if (screenfull.enabled) {
               screenfull.toggle(document.documentElement);
             }
@@ -166,7 +177,7 @@ var RevealToolbar =
         }
 
         if (showPause) {
-          dom.pauseButton = createToolbarButton(
+          dom.pauseButton = createContainerButton(
             'fa-eye-slash',
             Reveal.togglePause
           );
@@ -184,7 +195,7 @@ var RevealToolbar =
         }
 
         if (custom) {
-          custom.forEach(element => createToolbarButton(element.icon, element.callback));
+          custom.forEach(element => createContainerButton(element.icon, element.callback));
         }
         if (captureMenu) {
           // handle async loading of plugins
