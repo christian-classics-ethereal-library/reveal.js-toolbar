@@ -198,7 +198,7 @@ var RevealToolbar =
         }
 
         if (custom) {
-          custom.forEach(element => createContainerButton(element.icon, element.callback element?.attrs));
+          custom.forEach(element => createContainerButton(element.icon, element.callback, element?.attrs));
         }
         if (captureMenu) {
           // handle async loading of plugins
