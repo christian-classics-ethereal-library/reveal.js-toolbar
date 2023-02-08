@@ -116,13 +116,16 @@ var RevealToolbar =
           position == 'top' ? 'reveal-toolbar-top' : 'reveal-toolbar-bottom'
         );
 
-        function createContainerButton(icon, cb, container = dom.toolbar) {
+        function createContainerButton(icon, cb, attrs = {}, container = dom.toolbar) {
           var button = createNode(
             container,
             'a',
             'reveal-toolbar-button',
             null
           );
+          for (const [key, value] of Object.entries(attrs)) {
+            button.setAttribute(key, value);
+          }
           button.setAttribute('href', '#');
           button.onclick = function(event) {
             event.preventDefault();
@@ -195,7 +198,7 @@ var RevealToolbar =
         }
 
         if (custom) {
-          custom.forEach(element => createContainerButton(element.icon, element.callback));
+          custom.forEach(element => createContainerButton(element.icon, element.callback, element?.attrs));
         }
         if (captureMenu) {
           // handle async loading of plugins
