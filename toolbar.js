@@ -131,7 +131,7 @@ var RevealToolbar =
             event.preventDefault();
             cb(event);
           };
-          createNode(button, 'i', ['fa', icon]);
+          createNode(button, 'i', ['far', 'fa-fw', icon]);
           return button;
         }
 
